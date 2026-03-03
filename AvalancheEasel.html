@@ -11,6 +11,13 @@
         align-items: center;
         height: 100vh;
         font-family: Arial, sans-serif;
+        margin: 0;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+        gap: 40px;
     }
 
     svg {
@@ -32,11 +39,63 @@
         dominant-baseline: middle;
         font-weight: bold;
     }
+
+    .legend {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .legend h3 {
+        margin-top: 0;
+        margin-bottom: 15px;
+    }
+
+    .legend-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .color-box {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+        border: 1px solid #333;
+    }
 </style>
 </head>
 <body>
 
-<svg viewBox="0 0 600 600" id="chart"></svg>
+<div class="container">
+    <svg viewBox="0 0 600 600" id="chart"></svg>
+
+    <div class="legend">
+        <h3>Danger Scale</h3>
+        <div class="legend-item">
+            <div class="color-box" style="background: green;"></div>
+            Low (1)
+        </div>
+        <div class="legend-item">
+            <div class="color-box" style="background: yellow;"></div>
+            Moderate (2)
+        </div>
+        <div class="legend-item">
+            <div class="color-box" style="background: orange;"></div>
+            Considerable (3)
+        </div>
+        <div class="legend-item">
+            <div class="color-box" style="background: red;"></div>
+            High (4)
+        </div>
+        <div class="legend-item">
+            <div class="color-box" style="background: #2b2b2b;"></div>
+            Extreme (5)
+        </div>
+    </div>
+</div>
 
 <script>
 const svg = document.getElementById("chart");
@@ -75,6 +134,17 @@ function createRingSegment(rInner, rOuter, startAngle, endAngle) {
     `;
 }
 
+function getColor(clicks) {
+    switch(clicks) {
+        case 1: return "green";
+        case 2: return "yellow";
+        case 3: return "orange";
+        case 4: return "red";
+        case 5: return "#2b2b2b"; // softer extreme
+        default: return "white";
+    }
+}
+
 function addCell(rInner, rOuter, startAngle, endAngle) {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", createRingSegment(rInner, rOuter, startAngle, endAngle));
@@ -83,33 +153,21 @@ function addCell(rInner, rOuter, startAngle, endAngle) {
 
     path.addEventListener("click", function() {
         let clicks = parseInt(this.dataset.clicks);
-        clicks = (clicks + 1) % 5;
+        clicks = (clicks + 1) % 6;
         this.dataset.clicks = clicks;
-
-        switch(clicks) {
-            case 1: this.style.fill = "green"; break;
-            case 2: this.style.fill = "yellow"; break;
-            case 3: this.style.fill = "red"; break;
-            case 4: this.style.fill = "black"; break;
-            default: this.style.fill = "white";
-        }
+        this.style.fill = getColor(clicks);
     });
 
     svg.appendChild(path);
 }
 
-// Create all 24 cells (8 aspects × 3 elevation bands)
+// Create all 24 cells
 for (let i = 0; i < segments; i++) {
     const startAngle = i * angleStep;
     const endAngle = startAngle + angleStep;
 
-    // Outer band
     addCell(midRadius, outerRadius, startAngle, endAngle);
-
-    // Middle band
     addCell(innerRadius, midRadius, startAngle, endAngle);
-
-    // Inner band
     addCell(0, innerRadius, startAngle, endAngle);
 }
 
