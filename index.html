@@ -3,223 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <title>Avalanche Danger Rose</title>
+
 <style>
-    body {
-        background: #f4f4f4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
-        margin: 0;
-    }
+body {
+    background: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    margin: 0;
+}
 
-    .container {
-        display: flex;
-        align-items: center;
-        gap: 40px;
-    }
+/* ===== TOP PROBLEMS ===== */
+.top-problems {
+    background: white;
+    width: 90%;
+    max-width: 1000px;
+    margin-top: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-    svg {
-        width: 600px;
-        height: 600px;
-    }
+.problem-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+}
 
-    .cell {
-        fill: white;
-        stroke: black;
-        stroke-width: 1.5;
-        cursor: pointer;
-        transition: fill 0.15s ease;
-    }
+.problem-row label {
+    font-weight: bold;
+    width: 40px;
+}
 
-    .label {
-        font-size: 16px;
-        text-anchor: middle;
-        dominant-baseline: middle;
-        font-weight: bold;
-    }
+.problem-row input {
+    flex: 1;
+    padding: 6px;
+    font-size: 14px;
+}
 
-    .legend {
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        max-width: 240px;
-    }
+/* ===== MAIN LAYOUT ===== */
+.container {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    margin: 20px;
+}
 
-    .legend h3 {
-        margin-top: 0;
-        margin-bottom: 8px;
-    }
+/* ===== ROSE ===== */
+svg {
+    width: 600px;
+    height: 600px;
+}
 
-    .legend p {
-        font-size: 13px;
-        margin-top: 0;
-        margin-bottom: 15px;
-        color: #444;
-    }
+.cell {
+    fill: white;
+    stroke: black;
+    stroke-width: 1.5;
+    cursor: pointer;
+    transition: fill 0.15s ease;
+}
 
-    .legend-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        font-size: 14px;
-    }
+/* ===== LEGEND ===== */
+.legend {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    width: 600px;
+}
 
-    .color-box {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        border: 1px solid #333;
-    }
+.legend-inner {
+    display: flex;
+    align-items: stretch; /* ensures equal height */
+    gap: 40px;
+}
 
-    .reset-btn {
-        margin-top: 15px;
-        padding: 8px 12px;
-        font-size: 14px;
-        background: #444;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        width: 100%;
-    }
+/* ===== TABLE ===== */
+.tg {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 13px;
+}
 
-    .reset-btn:hover {
-        background: #222;
-    }
+.tg th, .tg td {
+    border: 1px solid #333;
+    padding: 6px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.tg th {
+    background: #eee;
+    font-weight: bold;
+}
+
+td[contenteditable="true"] {
+    background: #fafafa;
+}
+
+td[contenteditable="true"]:focus {
+    outline: 2px solid #4a90e2;
+    background: white;
+}
+
+.color-box {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    border: 1px solid #333;
+}
+
+/* ===== ELEVATION SCALE ===== */
+.elevation-scale {
+    position: relative;
+    width: 200px;
+}
+
+.track {
+    position: absolute;
+    left: 25px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #ccc;
+    border-radius: 2px;
+}
+
+.dot {
+    position: absolute;
+    left: 18px;
+    width: 14px;
+    height: 14px;
+    background: white;
+    border: 2px solid #444;
+    border-radius: 50%;
+    cursor: grab;
+    transform: translateY(-50%);
+}
+
+.dot span {
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.reset-btn {
+    margin-top: 15px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: #444;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.reset-btn:hover {
+    background: #222;
+}
 </style>
 </head>
+
 <body>
 
+<div class="top-problems">
+    <h2>Top 3 Avalanche Problems</h2>
+    <div class="problem-row"><label>#1</label><input type="text"></div>
+    <div class="problem-row"><label>#2</label><input type="text"></div>
+    <div class="problem-row"><label>#3</label><input type="text"></div>
+</div>
+
 <div class="container">
-    <svg viewBox="0 0 600 600" id="chart"></svg>
 
-    <div class="legend">
-        <h3>Danger Scale</h3>
-        <p>Click in a cell to color it and mark the level of avalanche danger.</p>
+<!-- ROSE -->
+<svg viewBox="0 0 600 600" id="chart"></svg>
 
-        <div class="legend-item"><div class="color-box" style="background: green;"></div>Low (1)</div>
-        <div class="legend-item"><div class="color-box" style="background: yellow;"></div>Moderate (2)</div>
-        <div class="legend-item"><div class="color-box" style="background: orange;"></div>Considerable (3)</div>
-        <div class="legend-item"><div class="color-box" style="background: red;"></div>High (4)</div>
-        <div class="legend-item"><div class="color-box" style="background: #2b2b2b;"></div>Extreme (5)</div>
+<!-- LEGEND -->
+<div class="legend">
+    <h3>Danger Scale</h3>
 
-        <button class="reset-btn" onclick="resetAll()">Reset All</button>
+    <div class="legend-inner">
+
+        <!-- TABLE -->
+        <table class="tg">
+            <thead>
+                <tr>
+                    <th>Hazard Level</th>
+                    <th>Likelihood</th>
+                    <th>Size & Distribution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="color-box" style="background:#2b2b2b;"></span> Extreme (5)</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td><span class="color-box" style="background:red;"></span> High (4)</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td><span class="color-box" style="background:orange;"></span> Considerable (3)</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td><span class="color-box" style="background:yellow;"></span> Moderate (2)</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+                <tr>
+                    <td><span class="color-box" style="background:green;"></span> Low (1)</td>
+                    <td contenteditable="true"></td>
+                    <td contenteditable="true"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- ELEVATION SCALE -->
+        <div class="elevation-scale" id="scale">
+            <div class="track"></div>
+
+            <div class="dot"><span>Above Resort</span></div>
+            <div class="dot"><span>Upper Mountain</span></div>
+            <div class="dot"><span>Lower Mountain</span></div>
+        </div>
+
     </div>
+
+    <button class="reset-btn" onclick="resetAll()">Reset All</button>
+</div>
+
 </div>
 
 <script>
+// ===== ROSE (unchanged) =====
 const svg = document.getElementById("chart");
+const centerX = 300, centerY = 300;
+const outerRadius = 250, midRadius = outerRadius*2/3, innerRadius = outerRadius/3;
+const segments = 8, angleStep = 360/segments;
 
-const centerX = 300;
-const centerY = 300;
-const outerRadius = 250;
-const midRadius = outerRadius * 2/3;
-const innerRadius = outerRadius * 1/3;
-
-const segments = 8;
-const angleStep = 360 / segments;
-
-// Rotate entire rose
 const rotatedGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
 rotatedGroup.setAttribute("transform", `rotate(-22 ${centerX} ${centerY})`);
 svg.appendChild(rotatedGroup);
 
 function polarToCartesian(cx, cy, r, angle) {
-    const rad = (angle - 90) * Math.PI / 180.0;
-    return {
-        x: cx + r * Math.cos(rad),
-        y: cy + r * Math.sin(rad)
-    };
+    const rad = (angle-90)*Math.PI/180;
+    return {x: cx+r*Math.cos(rad), y: cy+r*Math.sin(rad)};
 }
 
-function createRingSegment(rInner, rOuter, startAngle, endAngle) {
-    const startOuter = polarToCartesian(centerX, centerY, rOuter, startAngle);
-    const endOuter = polarToCartesian(centerX, centerY, rOuter, endAngle);
-    const startInner = polarToCartesian(centerX, centerY, rInner, endAngle);
-    const endInner = polarToCartesian(centerX, centerY, rInner, startAngle);
-
-    const largeArcFlag = (endAngle - startAngle) > 180 ? 1 : 0;
-
-    return `
-        M ${startOuter.x} ${startOuter.y}
-        A ${rOuter} ${rOuter} 0 ${largeArcFlag} 1 ${endOuter.x} ${endOuter.y}
-        L ${startInner.x} ${startInner.y}
-        A ${rInner} ${rInner} 0 ${largeArcFlag} 0 ${endInner.x} ${endInner.y}
-        Z
-    `;
+function createRingSegment(rInner,rOuter,startAngle,endAngle){
+    const sO=polarToCartesian(centerX,centerY,rOuter,startAngle);
+    const eO=polarToCartesian(centerX,centerY,rOuter,endAngle);
+    const sI=polarToCartesian(centerX,centerY,rInner,endAngle);
+    const eI=polarToCartesian(centerX,centerY,rInner,startAngle);
+    const largeArcFlag=(endAngle-startAngle)>180?1:0;
+    return `M ${sO.x} ${sO.y}
+            A ${rOuter} ${rOuter} 0 ${largeArcFlag} 1 ${eO.x} ${eO.y}
+            L ${sI.x} ${sI.y}
+            A ${rInner} ${rInner} 0 ${largeArcFlag} 0 ${eI.x} ${eI.y}
+            Z`;
 }
 
-function getColor(clicks) {
-    switch(clicks) {
-        case 1: return "green";
-        case 2: return "yellow";
-        case 3: return "orange";
-        case 4: return "red";
-        case 5: return "#2b2b2b";
-        default: return "white";
-    }
-}
+function getColor(c){return["white","green","yellow","orange","red","#2b2b2b"][c];}
 
-function addCell(rInner, rOuter, startAngle, endAngle) {
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", createRingSegment(rInner, rOuter, startAngle, endAngle));
-    path.setAttribute("class", "cell");
-    path.dataset.clicks = 0;
-
-    path.addEventListener("click", function() {
-        let clicks = parseInt(this.dataset.clicks);
-        clicks = (clicks + 1) % 6;
-        this.dataset.clicks = clicks;
-        this.style.fill = getColor(clicks);
+function addCell(rInner,rOuter,startAngle,endAngle){
+    const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+    path.setAttribute("d",createRingSegment(rInner,rOuter,startAngle,endAngle));
+    path.setAttribute("class","cell");
+    path.dataset.clicks=0;
+    path.addEventListener("click",function(){
+        let c=(+this.dataset.clicks+1)%6;
+        this.dataset.clicks=c;
+        this.style.fill=getColor(c);
     });
-
     rotatedGroup.appendChild(path);
 }
 
-function resetAll() {
-    const cells = document.querySelectorAll(".cell");
-    cells.forEach(cell => {
-        cell.dataset.clicks = 0;
-        cell.style.fill = "white";
+function resetAll(){
+    document.querySelectorAll(".cell").forEach(c=>{
+        c.dataset.clicks=0;
+        c.style.fill="white";
     });
 }
 
-// Build rose
-for (let i = 0; i < segments; i++) {
-    const startAngle = i * angleStep;
-    const endAngle = startAngle + angleStep;
-
-    addCell(midRadius, outerRadius, startAngle, endAngle);
-    addCell(innerRadius, midRadius, startAngle, endAngle);
-    addCell(0, innerRadius, startAngle, endAngle);
+for(let i=0;i<segments;i++){
+    const s=i*angleStep, e=s+angleStep;
+    addCell(midRadius,outerRadius,s,e);
+    addCell(innerRadius,midRadius,s,e);
+    addCell(0,innerRadius,s,e);
 }
 
-const directions = ["N","NE","E","SE","S","SW","W","NW"];
+// ===== DRAGGABLE DOTS =====
+const scale = document.getElementById("scale");
+const dots = document.querySelectorAll(".dot");
 
-// Radially aligned labels
-for (let i = 0; i < segments; i++) {
-    const angle = i * angleStep + angleStep / 2;
-    const pos = polarToCartesian(centerX, centerY, outerRadius + 30, angle);
+dots.forEach((dot,index)=>{
+    requestAnimationFrame(()=>{
+        const height=scale.offsetHeight;
+        dot.style.top=(height*(index+1)/4)+"px";
+    });
 
-    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttribute("x", pos.x);
-    text.setAttribute("y", pos.y);
-    text.setAttribute("class", "label");
-    text.textContent = directions[i];
+    let dragging=false;
 
-    // Rotate label to follow arc
-    let rotation = angle;
-    if (rotation > 90 && rotation < 270) {
-        rotation += 180; // keep text upright on bottom half
-    }
+    dot.addEventListener("mousedown",()=>dragging=true);
+    document.addEventListener("mouseup",()=>dragging=false);
 
-    text.setAttribute("transform", `rotate(${rotation} ${pos.x} ${pos.y})`);
-
-    rotatedGroup.appendChild(text);
-}
+    document.addEventListener("mousemove",(e)=>{
+        if(!dragging) return;
+        const rect=scale.getBoundingClientRect();
+        let y=e.clientY-rect.top;
+        y=Math.max(0,Math.min(rect.height,y));
+        dot.style.top=y+"px";
+    });
+});
 </script>
 
 </body>
