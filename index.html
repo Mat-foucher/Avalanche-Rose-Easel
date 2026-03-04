@@ -253,6 +253,13 @@ const outerRadius = 250, midRadius = outerRadius*2/3, innerRadius = outerRadius/
 const segments = 8, angleStep = 360/segments;
 
 const rotatedGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+const directions = ["N","NE","E","SE","S","SW","W","NW"];
+const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", pos.x);
+    text.setAttribute("y", pos.y);
+    text.setAttribute("class", "label");
+    text.textContent = directions[i];
+    
 rotatedGroup.setAttribute("transform", `rotate(-22 ${centerX} ${centerY})`);
 svg.appendChild(rotatedGroup);
 
