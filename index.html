@@ -686,9 +686,57 @@ function resetAll() {
   velQ = { x:0, y:0, z:0, w:1 };
   zoom = 1.0;
   stopAnim();
+  saveState();
   render();
 }
 
+// ── localStorage persistence ───────────────────────────────────────────────
+const STORAGE_KEY = 'avyroseState_v1';
+
+function saveState() {
+  try {
+    const problems = [...document.querySelectorAll('.problem-row input')].map(i => i.value);
+    const state = {
+      colors:   faces.map(f => f.colorIdx),
+      q:        { x: q.x, y: q.y, z: q.z, w: q.w },
+      zoom,
+      problems,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (state.colors)   state.colors.forEach((c, i) => { if (faces[i]) faces[i].colorIdx = c; });
+    if (state.q)        q    = qNorm(state.q);
+    if (state.zoom)     zoom = state.zoom;
+    if (state.problems) {
+      const inputs = document.querySelectorAll('.problem-row input');
+      state.problems.forEach((val, i) => { if (inputs[i]) inputs[i].value = val; });
+    }
+  } catch(e) {}
+}
+
+// Auto-save on any render after initial load
+const _render = render;
+let _loaded = false;
+render = function() {
+  _render();
+  if (_loaded) saveState();
+};
+
+// Save problem text on input
+document.querySelectorAll('.problem-row input').forEach(inp => {
+  inp.addEventListener('input', saveState);
+});
+
+// Load saved state then render
+loadState();
+_loaded = true;
 render();
 
 // ============================================================
