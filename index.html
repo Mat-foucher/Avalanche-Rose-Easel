@@ -222,8 +222,14 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 }
 
 /* ── reset button ─────────────────────────────────────────────────────── */
-.reset-btn {
+.btn-row {
+  display: flex;
+  gap: 10px;
   margin-top: clamp(10px, 1vw, 18px);
+}
+
+.reset-btn {
+  flex: 1;
   padding: clamp(7px, 0.7vw, 12px) clamp(10px, 1vw, 18px);
   font-size: var(--font-base);
   background: #1a2740;
@@ -231,13 +237,29 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  width: 100%;
   font-weight: 600;
   letter-spacing: 0.04em;
   transition: background 0.2s;
 }
 
 .reset-btn:hover { background: #2e4070; }
+
+.share-btn {
+  flex: 1;
+  padding: clamp(7px, 0.7vw, 12px) clamp(10px, 1vw, 18px);
+  font-size: var(--font-base);
+  background: #2a7a40;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+}
+
+.share-btn:hover  { background: #3aaa58; }
+.share-btn.copied { background: #555; }
 
 /* ── narrow screen stacking ───────────────────────────────────────────── */
 @media (max-width: 900px) {
@@ -321,7 +343,10 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 
     </div>
 
-    <button class="reset-btn" onclick="resetAll()">Reset All</button>
+    <div class="btn-row">
+      <button class="reset-btn" onclick="resetAll()">Reset All</button>
+      <button class="share-btn" onclick="shareState()" id="share-btn">⬆ Share Link</button>
+    </div>
   </div>
 
 </div>
@@ -734,8 +759,54 @@ document.querySelectorAll('.problem-row input').forEach(inp => {
   inp.addEventListener('input', saveState);
 });
 
-// Load saved state then render
+// ── URL hash state sharing ─────────────────────────────────────────────────
+function encodeToHash() {
+  const problems = [...document.querySelectorAll('.problem-row input')].map(i => i.value);
+  const data = {
+    c: faces.map(f => f.colorIdx).join(''),   // "012301230123..." — 24 chars
+    p: problems,
+    q: { x: +q.x.toFixed(5), y: +q.y.toFixed(5), z: +q.z.toFixed(5), w: +q.w.toFixed(5) },
+    z: +zoom.toFixed(3),
+  };
+  return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+}
+
+function decodeFromHash(hash) {
+  try {
+    const data = JSON.parse(decodeURIComponent(escape(atob(hash))));
+    if (data.c) data.c.split('').forEach((c, i) => { if (faces[i]) faces[i].colorIdx = +c; });
+    if (data.p) {
+      const inputs = document.querySelectorAll('.problem-row input');
+      data.p.forEach((val, i) => { if (inputs[i]) inputs[i].value = val; });
+    }
+    if (data.q) q    = qNorm(data.q);
+    if (data.z) zoom = data.z;
+    return true;
+  } catch(e) { return false; }
+}
+
+function shareState() {
+  const hash = encodeToHash();
+  location.hash = hash;
+  const url = location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '⬆ Share Link';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // fallback: prompt with URL if clipboard blocked
+    prompt('Copy this link:', url);
+  });
+}
+
+// Load saved state then render — URL hash takes priority over localStorage
 loadState();
+const hashStr = location.hash.slice(1);
+if (hashStr) decodeFromHash(hashStr);
 _loaded = true;
 render();
 
