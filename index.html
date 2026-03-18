@@ -266,7 +266,7 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
   <!-- 3D CONE -->
   <div class="cone-wrapper">
     <canvas id="cone-canvas"></canvas>
-    <p class="cone-hint">drag to orbit &nbsp;·&nbsp; double-click face to cycle danger &nbsp;·&nbsp; double-click background to reset view</p>
+    <p class="cone-hint">drag to orbit &nbsp;·&nbsp; double-click face to cycle danger &nbsp;·&nbsp; double-click background to reset view &nbsp;·&nbsp; ctrl + scroll to zoom</p>
   </div>
 
   <!-- LEGEND + ELEVATION -->
@@ -426,9 +426,7 @@ const FACE_STEP         = (2 * PI) / NUM_FACES;
 const SNAP_BASE_Y_ANGLE = -(PI/2 - (0.5/NUM_FACES)*2*PI);
 
 function makeInitialQuat() {
-  const qY = qFromAxisAngle(0, 1, 0, SNAP_BASE_Y_ANGLE);
-  const qX = qFromAxisAngle(1, 0, 0, 0.5);
-  return qNorm(qMul(qX, qY));
+  return qNorm({ x: 0.39, y: -0.58, z: 0.59, w: -0.39 });
 }
 function faceSnapQuat(faceIdx) {
   return qFromAxisAngle(0, 1, 0, SNAP_BASE_Y_ANGLE - faceIdx * FACE_STEP);
