@@ -14,16 +14,18 @@
   --card:      #ffffff;
   --shadow:    0 4px 16px rgba(0,0,0,0.12);
   --radius:    10px;
-  --gap:       clamp(16px, 2vw, 40px);
-  --pad:       clamp(12px, 1.5vw, 24px);
-  --font-base: clamp(13px, 1.1vw, 17px);
-  --font-sm:   clamp(11px, 0.9vw, 14px);
-  --font-lg:   clamp(16px, 1.4vw, 22px);
-  --font-xl:   clamp(18px, 1.8vw, 28px);
+  --gap:       clamp(6px, 0.8vw, 14px);
+  --pad:       clamp(8px, 0.9vw, 16px);
+  --font-base: clamp(11px, 0.9vw, 14px);
+  --font-sm:   clamp(9px,  0.75vw, 12px);
+  --font-lg:   clamp(12px, 1.1vw, 18px);
+  /* shared height for cone, elevation, and problems cards */
+  --card-h:    min(40vw, 82vh);
 }
 
 html, body {
-  height: 100%;
+  height: 100vh;
+  overflow: hidden;
   background: var(--bg);
   font-family: 'Segoe UI', Arial, sans-serif;
   font-size: var(--font-base);
@@ -33,71 +35,27 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  align-items: center;
   padding: var(--pad);
   gap: var(--gap);
-  min-height: 100vh;
 }
 
-/* ── top problems ─────────────────────────────────────────────────────── */
-.top-problems {
-  background: var(--card);
-  width: 100%;
-  max-width: 1600px;
-  padding: var(--pad);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.top-problems h2 {
-  font-size: var(--font-lg);
-  margin-bottom: clamp(8px, 0.8vw, 14px);
-  color: #1a2740;
-}
-
-.problem-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-
-.problem-row label {
-  font-weight: 700;
-  font-size: var(--font-base);
-  width: clamp(28px, 2.5vw, 44px);
-  flex-shrink: 0;
-  color: #555;
-}
-
-.problem-row input {
-  flex: 1;
-  padding: clamp(5px, 0.6vw, 10px) clamp(8px, 0.8vw, 14px);
-  font-size: var(--font-base);
-  border: 1.5px solid #ccc;
-  border-radius: 6px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-
-.problem-row input:focus { border-color: #4a90e2; }
-
-/* ── main layout ──────────────────────────────────────────────────────── */
+/* ── single-row container ─────────────────────────────────────────────── */
 .container {
   display: flex;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: stretch;
   gap: var(--gap);
+  flex: 1;
+  min-height: 0;
   width: 100%;
-  max-width: 1600px;
-  flex-wrap: wrap;        /* stacks on narrow screens */
 }
 
-/* ── cone wrapper ─────────────────────────────────────────────────────── */
+/* ── cone ─────────────────────────────────────────────────────────────── */
 .cone-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  align-items: flex-start;
+  gap: 4px;
   flex-shrink: 0;
 }
 
@@ -105,92 +63,52 @@ body {
   font-size: var(--font-sm);
   color: #888;
   font-family: monospace;
-  text-align: center;
 }
 
 #cone-canvas {
   border-radius: var(--radius);
   display: block;
-  /* canvas pixel size set by JS; CSS width makes it scale visually */
-  width: clamp(300px, 38vw, 620px);
-  height: clamp(300px, 38vw, 620px);
+  width:  var(--card-h);
+  height: var(--card-h);
   box-shadow: var(--shadow);
 }
 
-/* ── legend ───────────────────────────────────────────────────────────── */
-.legend {
-  background: var(--card);
-  padding: var(--pad);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  flex: 1;
-  min-width: 320px;
-}
-
-.legend h3 {
-  font-size: var(--font-lg);
-  margin-bottom: clamp(8px, 0.8vw, 14px);
-  color: #1a2740;
-}
-
-.legend-inner {
+/* ── elevation + problems column ──────────────────────────────────────── */
+.elev-problems-col {
   display: flex;
-  align-items: stretch;
+  flex-direction: column;
   gap: var(--gap);
+  height: var(--card-h);
+  width: clamp(110px, 10vw, 165px);
+  flex-shrink: 0;
 }
 
-/* ── table ────────────────────────────────────────────────────────────── */
-.tg {
-  border-collapse: collapse;
-  width: 100%;
-  table-layout: fixed;
-  font-size: var(--font-sm);
-}
-
-.tg th, .tg td {
-  border: 1px solid #aaa;
-  padding: clamp(4px, 0.5vw, 9px) clamp(5px, 0.6vw, 10px);
-  text-align: left;
-  vertical-align: top;
-  line-height: 1.4;
-}
-
-.tg th {
-  background: #e8eaed;
-  font-weight: 700;
-  font-size: var(--font-sm);
-  white-space: nowrap;
-}
-
-/* Hazard level column narrower */
-.tg th:first-child, .tg td:first-child { width: 28%; }
-
-td[contenteditable="true"] { background: #fafafa; cursor: text; }
-td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white; }
-
-.color-box {
-  display: inline-block;
-  width: clamp(10px, 1vw, 16px);
-  height: clamp(10px, 1vw, 16px);
-  margin-right: 5px;
-  border: 1px solid #555;
-  vertical-align: middle;
-  border-radius: 2px;
-}
-
-/* ── elevation scale ──────────────────────────────────────────────────── */
+/* ── elevation scale (2/3 of column) ─────────────────────────────────── */
 .elevation-scale {
   position: relative;
-  flex-shrink: 0;
-  width: clamp(120px, 10vw, 180px);
-  min-height: 200px;
+  flex: 2;
+  min-height: 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 8px 0;
+}
+
+.scale-label {
+  text-align: center;
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: #1a2740;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 2px;
 }
 
 .track {
   position: absolute;
   left: 22px;
-  top: 0;
-  bottom: 0;
+  top: 34px;
+  bottom: 8px;
   width: 4px;
   background: #ccc;
   border-radius: 2px;
@@ -199,8 +117,8 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 .dot {
   position: absolute;
   left: 15px;
-  width: clamp(12px, 1vw, 16px);
-  height: clamp(12px, 1vw, 16px);
+  width: 13px;
+  height: 13px;
   background: white;
   border: 2px solid #444;
   border-radius: 50%;
@@ -213,7 +131,7 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 
 .dot span {
   position: absolute;
-  left: clamp(18px, 1.5vw, 24px);
+  left: 20px;
   top: 50%;
   transform: translateY(-50%);
   font-size: var(--font-sm);
@@ -221,17 +139,168 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
   color: #333;
 }
 
-/* ── reset button ─────────────────────────────────────────────────────── */
+/* ── problems panel (1/3 of column) ──────────────────────────────────── */
+.problems-panel {
+  flex: 1;
+  min-height: 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 0.5vh, 8px);
+  overflow: hidden;
+}
+
+.problems-panel h2 {
+  font-size: var(--font-sm);
+  font-weight: 700;
+  color: #1a2740;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.problem-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-height: 0;
+}
+
+.problem-row label {
+  font-weight: 700;
+  font-size: var(--font-sm);
+  color: #555;
+  flex-shrink: 0;
+}
+
+.problem-row input {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  padding: clamp(3px, 0.4vh, 6px) clamp(4px, 0.4vw, 6px);
+  font-size: var(--font-sm);
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.problem-row input:focus { border-color: #4a90e2; }
+
+/* ── legend (takes all remaining width, same height as other cards) ───── */
+.legend {
+  background: var(--card);
+  padding: var(--pad);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  flex: 1;
+  min-width: 0;
+  height: var(--card-h);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.legend h3 {
+  font-size: var(--font-lg);
+  margin-bottom: clamp(5px, 0.5vh, 10px);
+  color: #1a2740;
+  flex-shrink: 0;
+}
+
+.legend-inner {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: clamp(6px, 0.6vh, 12px);
+}
+
+/* ── table ────────────────────────────────────────────────────────────── */
+.tg {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-size: var(--font-sm);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tg thead {
+  flex-shrink: 0;
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.tg tbody {
+  flex: 1;
+  display: block;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.tg tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  height: 20%; /* 5 rows = 20% each, fills tbody exactly */
+}
+
+.tg tbody td {
+  height: 100%;
+}
+
+.tg th, .tg td {
+  border: 1px solid #aaa;
+  padding: clamp(3px, 0.35vh, 6px) clamp(4px, 0.4vw, 8px);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.3;
+}
+
+.tg th {
+  background: #e8eaed;
+  font-weight: 700;
+  font-size: var(--font-sm);
+  white-space: nowrap;
+}
+
+.tg th:first-child, .tg td:first-child { width: 13%; }
+.tg th:nth-child(2), .tg td:nth-child(2) { width: 30%; }
+
+td[contenteditable="true"] { background: #fafafa; cursor: text; }
+td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white; }
+
+.color-box {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  margin-right: 4px;
+  border: 1px solid #555;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+/* ── buttons ──────────────────────────────────────────────────────────── */
 .btn-row {
   display: flex;
-  gap: 10px;
-  margin-top: clamp(10px, 1vw, 18px);
+  gap: 8px;
+  margin-top: clamp(5px, 0.5vh, 10px);
+  flex-shrink: 0;
 }
 
 .reset-btn {
   flex: 1;
-  padding: clamp(7px, 0.7vw, 12px) clamp(10px, 1vw, 18px);
-  font-size: var(--font-base);
+  padding: clamp(4px, 0.45vh, 8px) clamp(6px, 0.6vw, 12px);
+  font-size: var(--font-sm);
   background: #1a2740;
   color: white;
   border: none;
@@ -246,8 +315,8 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 
 .share-btn {
   flex: 1;
-  padding: clamp(7px, 0.7vw, 12px) clamp(10px, 1vw, 18px);
-  font-size: var(--font-base);
+  padding: clamp(4px, 0.45vh, 8px) clamp(6px, 0.6vw, 12px);
+  font-size: var(--font-sm);
   background: #2a7a40;
   color: white;
   border: none;
@@ -261,88 +330,104 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
 .share-btn:hover  { background: #3aaa58; }
 .share-btn.copied { background: #555; }
 
-/* ── narrow screen stacking ───────────────────────────────────────────── */
+/* ── narrow screens ───────────────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .container { flex-direction: column; align-items: center; }
-  .legend { width: 100%; min-width: unset; }
-  #cone-canvas { width: min(90vw, 500px); height: min(90vw, 500px); }
-  .legend-inner { flex-direction: column; }
-  .elevation-scale { width: 100%; min-height: 120px; }
+  html, body        { height: auto; overflow: auto; }
+  .container        { flex-direction: column; align-items: center; }
+  #cone-canvas      { width: min(90vw, 480px); height: min(90vw, 480px); }
+  .elevation-scale  { width: 100%; height: 150px; }
+  .problems-panel   { width: 100%; height: auto; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- TOP PROBLEMS -->
-<div class="top-problems">
-  <h2>Top 3 Avalanche Problems</h2>
-  <div class="problem-row"><label>#1</label><input type="text" placeholder="e.g. Wind Slab — N/NE aspects, upper elevations"></div>
-  <div class="problem-row"><label>#2</label><input type="text" placeholder="e.g. Storm Slab — all aspects, treeline and above"></div>
-  <div class="problem-row"><label>#3</label><input type="text" placeholder="e.g. Persistent Weak Layer — buried facets"></div>
-</div>
-
 <!-- MAIN CONTENT -->
 <div class="container">
 
-  <!-- 3D CONE -->
+  <!-- CONE -->
   <div class="cone-wrapper">
     <canvas id="cone-canvas"></canvas>
     <p class="cone-hint">drag to orbit &nbsp;·&nbsp; double-click face to cycle danger &nbsp;·&nbsp; double-click background to reset view &nbsp;·&nbsp; ctrl + scroll to zoom</p>
   </div>
 
-  <!-- LEGEND + ELEVATION -->
+  <!-- ELEVATION + PROBLEMS (stacked column) -->
+  <div class="elev-problems-col">
+
+    <div class="elevation-scale" id="scale">
+      <div class="scale-label">Elevation</div>
+      <div class="track"></div>
+      <div class="dot"><span>Above 9,500 ft</span></div>
+      <div class="dot"><span>8,000 – 9,500 ft</span></div>
+      <div class="dot"><span>Below 8,000 ft</span></div>
+    </div>
+
+    <div class="problems-panel">
+      <h2>Top 3 Avalanche Problems</h2>
+      <div class="problem-row">
+        <label>#1</label>
+        <input type="text" placeholder="e.g. Wind Slab">
+      </div>
+      <div class="problem-row">
+        <label>#2</label>
+        <input type="text" placeholder="e.g. Storm Slab">
+      </div>
+      <div class="problem-row">
+        <label>#3</label>
+        <input type="text" placeholder="e.g. Persistent Weak Layer">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DANGER SCALE TABLE -->
   <div class="legend">
     <h3>Danger Scale</h3>
-
     <div class="legend-inner">
-
       <table class="tg">
         <thead>
           <tr>
-            <th>Hazard Level</th>
+            <th>Danger Level</th>
+            <th>Travel Advice</th>
             <th>Likelihood</th>
             <th>Size &amp; Distribution</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="color-box" style="background:#111111;"></span>Extreme (5)</td>
-            <td contenteditable="true">Natural and artificially triggered avalanches almost certain.</td>
-            <td contenteditable="true">Widespread large avalanches likely.</td>
+            <td><span class="color-box" style="background:#111111;"></span>5 - Extreme</td>
+            <td contenteditable="true"><strong>Extraordinarily dangerous avalanche conditions.</strong> Avoid all avalanche terrain.</td>
+            <td contenteditable="true">Natural and human-triggered avalanches certain.</td>
+            <td contenteditable="true">Very large avalanches in many areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#e02020;"></span>High (4)</td>
-            <td contenteditable="true">Natural avalanches likely; human-triggered very likely.</td>
-            <td contenteditable="true">Large avalanches in many areas.</td>
+            <td><span class="color-box" style="background:#e02020;"></span>4 - High</td>
+            <td contenteditable="true"><strong>Very dangerous avalanche conditions.</strong> Travel in avalanche terrain not recommended.</td>
+            <td contenteditable="true">Natural avalanches likely; human-triggered avalanches very likely.</td>
+            <td contenteditable="true">Large avalanches in many areas; or very large avalanches in specific areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#f07820;"></span>Considerable (3)</td>
-            <td contenteditable="true">Natural avalanches possible; human-triggered likely.</td>
-            <td contenteditable="true">Dangerous avalanches on many slopes.</td>
+            <td><span class="color-box" style="background:#f07820;"></span>3 - Considerable</td>
+            <td contenteditable="true"><strong>Dangerous avalanche conditions.</strong> Careful snowpack evaluation, cautious route-finding, and conservative decision-making essential.</td>
+            <td contenteditable="true">Natural avalanches possible; human-triggered avalanches likely.</td>
+            <td contenteditable="true">Small avalanches in many areas; or large avalanches in specific areas; or very large avalanches in isolated areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#f5e320;"></span>Moderate (2)</td>
-            <td contenteditable="true">Heightened avalanche conditions on specific terrain.</td>
-            <td contenteditable="true">Small avalanches in isolated areas.</td>
+            <td><span class="color-box" style="background:#f5e320;"></span>2 - Moderate</td>
+            <td contenteditable="true"><strong>Heightened avalanche conditions on specific terrain features.</strong> Evaluate snow and terrain carefully; identify features of concern.</td>
+            <td contenteditable="true">Natural avalanches unlikely; human-triggered avalanches possible.</td>
+            <td contenteditable="true">Small avalanches in specific areas; or large avalanches in isolated areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#3cc850;"></span>Low (1)</td>
+            <td><span class="color-box" style="background:#3cc850;"></span>1 - Low</td>
+            <td contenteditable="true"><strong>Generally safe avalanche conditions.</strong> Watch for unstable snow on isolated terrain features.</td>
             <td contenteditable="true">Natural and human-triggered avalanches unlikely.</td>
-            <td contenteditable="true">Generally small and isolated.</td>
+            <td contenteditable="true">Small avalanches in isolated areas or extreme terrain.</td>
           </tr>
         </tbody>
       </table>
-
-      <div class="elevation-scale" id="scale">
-        <div class="track"></div>
-        <div class="dot"><span>Above Resort</span></div>
-        <div class="dot"><span>Upper Mountain</span></div>
-        <div class="dot"><span>Lower Mountain</span></div>
-      </div>
-
     </div>
-
     <div class="btn-row">
       <button class="reset-btn" onclick="resetAll()">Reset All</button>
       <button class="share-btn" onclick="shareState()" id="share-btn">⬆ Share Link</button>
@@ -552,13 +637,15 @@ function render() {
 
   if (ringOpacity > 0.01) {
     const RING_COLORS  = ['#00cfff', '#ffe066', '#ff8c42'];
-    const RING_LABELS  = ['Above Resort', 'Upper Mountain', 'Lower Mountain'];
+    const RING_LABELS  = ['Above 9,500 ft', '8,000 – 9,500 ft', 'Below 8,000 ft'];
     const scaleElRef   = document.getElementById('scale');
     const dotsRef      = document.querySelectorAll('.dot');
     const scaleH       = scaleElRef ? scaleElRef.offsetHeight : 1;
 
     dotsRef.forEach((dot, di) => {
-      const frac   = scaleH > 0 ? Math.max(0, Math.min(1, parseFloat(dot.style.top || 0) / scaleH)) : (di+1)/4;
+      const labelOffset = 40;
+      const usableH = (scaleH - labelOffset) || 1;
+      const frac   = Math.max(0, Math.min(1, (parseFloat(dot.style.top || labelOffset) - labelOffset) / usableH));
       const t      = frac;
       const yModel = -HEIGHT / 2 + t * HEIGHT;
       const rModel = RADIUS * t;
@@ -907,8 +994,8 @@ function getDotFraction(dot) {
 // Call render() whenever a dot moves so the cone updates live
 dots.forEach((dot, index) => {
   requestAnimationFrame(() => {
-    const h = scaleEl.offsetHeight;
-    dot.style.top = (dotFractions[index] * h) + "px";
+    const h = scaleEl.offsetHeight - 40; // subtract label+padding
+    dot.style.top = (40 + dotFractions[index] * h) + "px";
   });
   let dotDragging = false;
   dot.addEventListener("mousedown", e => { dotDragging = true; e.stopPropagation(); });
@@ -916,9 +1003,9 @@ dots.forEach((dot, index) => {
   document.addEventListener("mousemove", e => {
     if (!dotDragging) return;
     const rect = scaleEl.getBoundingClientRect();
-    let y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+    let y = Math.max(40, Math.min(rect.height, e.clientY - rect.top));
     dot.style.top = y + "px";
-    render(); // live update cone markers
+    render();
   });
 });
 </script>
