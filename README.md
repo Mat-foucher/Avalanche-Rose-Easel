@@ -1,5 +1,5 @@
 # Avalanche-Rose-Easel
-An Interactive avalanche elevation rose in 3D with interactive elevation marker bands and customizable hazards.
+An Interactive avalanche elevation rose chart in 3D + forecast page with interactive elevation marker bands and customizable hazards.
 
 ## How to use:
 
