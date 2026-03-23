@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avalanche Danger Rose - 3D</title>
+<title>Avalanche Danger Rose — Snowbird Ski Patrol</title>
 
 <style>
 /* ── reset & base ─────────────────────────────────────────────────────── */
@@ -273,8 +273,9 @@ body {
   white-space: nowrap;
 }
 
-.tg th:first-child, .tg td:first-child { width: 13%; }
-.tg th:nth-child(2), .tg td:nth-child(2) { width: 30%; }
+.tg th:first-child, .tg td:first-child { width: 15%; text-align: center; }
+.tg th:nth-child(2), .tg td:nth-child(2) { width: 42.5%; }
+.tg th:nth-child(3), .tg td:nth-child(3) { width: 42.5%; }
 
 td[contenteditable="true"] { background: #fafafa; cursor: text; }
 td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white; }
@@ -358,9 +359,9 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
     <div class="elevation-scale" id="scale">
       <div class="scale-label">Elevation</div>
       <div class="track"></div>
-      <div class="dot"><span>Above 9,500 ft</span></div>
-      <div class="dot"><span>8,000 – 9,500 ft</span></div>
-      <div class="dot"><span>Below 8,000 ft</span></div>
+      <div class="dot"><span>Above Resort</span></div>
+      <div class="dot"><span>Upper Mountain</span></div>
+      <div class="dot"><span>Lower Mountain</span></div>
     </div>
 
     <div class="problems-panel">
@@ -388,42 +389,36 @@ td[contenteditable="true"]:focus { outline: 2px solid #4a90e2; background: white
       <table class="tg">
         <thead>
           <tr>
-            <th>Danger Level</th>
-            <th>Travel Advice</th>
-            <th>Likelihood</th>
-            <th>Size &amp; Distribution</th>
+            <th>Hazard Level</th>
+            <th>Likelihood of Avalanches</th>
+            <th>Size and Distribution</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><span class="color-box" style="background:#111111;"></span>5 - Extreme</td>
-            <td contenteditable="true"><strong>Extraordinarily dangerous avalanche conditions.</strong> Avoid all avalanche terrain.</td>
-            <td contenteditable="true">Natural and human-triggered avalanches certain.</td>
-            <td contenteditable="true">Very large avalanches in many areas.</td>
+            <td style="background:#111111; color:white; text-align:center; font-weight:700;">5<br>Extreme</td>
+            <td contenteditable="true">Natural and artificially triggered avalanches almost certain.</td>
+            <td contenteditable="true">&gt; Size 3 avalanches are widespread.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#e02020;"></span>4 - High</td>
-            <td contenteditable="true"><strong>Very dangerous avalanche conditions.</strong> Travel in avalanche terrain not recommended.</td>
-            <td contenteditable="true">Natural avalanches likely; human-triggered avalanches very likely.</td>
-            <td contenteditable="true">Large avalanches in many areas; or very large avalanches in specific areas.</td>
+            <td style="background:#e02020; color:white; text-align:center; font-weight:700;">4<br>High</td>
+            <td contenteditable="true">Natural avalanches likely; artificially triggered avalanches very likely.</td>
+            <td contenteditable="true">Size 2-3 avalanches are widespread; or &gt; size 3 avalanches in specific areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#f07820;"></span>3 - Considerable</td>
-            <td contenteditable="true"><strong>Dangerous avalanche conditions.</strong> Careful snowpack evaluation, cautious route-finding, and conservative decision-making essential.</td>
-            <td contenteditable="true">Natural avalanches possible; human-triggered avalanches likely.</td>
-            <td contenteditable="true">Small avalanches in many areas; or large avalanches in specific areas; or very large avalanches in isolated areas.</td>
+            <td style="background:#f07820; color:white; text-align:center; font-weight:700;">3<br>Considerable</td>
+            <td contenteditable="true">Natural avalanches possible; artificially triggered avalanches likely.</td>
+            <td contenteditable="true">&lt; Size 2 avalanches are widespread; or size 2-3 avalanches in specific areas; or &gt; size 3 avalanches in isolated areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#f5e320;"></span>2 - Moderate</td>
-            <td contenteditable="true"><strong>Heightened avalanche conditions on specific terrain features.</strong> Evaluate snow and terrain carefully; identify features of concern.</td>
-            <td contenteditable="true">Natural avalanches unlikely; human-triggered avalanches possible.</td>
-            <td contenteditable="true">Small avalanches in specific areas; or large avalanches in isolated areas.</td>
+            <td style="background:#f5e320; color:#222; text-align:center; font-weight:700;">2<br>Moderate</td>
+            <td contenteditable="true">Natural avalanches unlikely; artificially triggered avalanches possible.</td>
+            <td contenteditable="true">&lt; Size 2 avalanches in specific areas; or size 2-3 avalanches in isolated areas.</td>
           </tr>
           <tr>
-            <td><span class="color-box" style="background:#3cc850;"></span>1 - Low</td>
-            <td contenteditable="true"><strong>Generally safe avalanche conditions.</strong> Watch for unstable snow on isolated terrain features.</td>
-            <td contenteditable="true">Natural and human-triggered avalanches unlikely.</td>
-            <td contenteditable="true">Small avalanches in isolated areas or extreme terrain.</td>
+            <td style="background:#3cc850; color:white; text-align:center; font-weight:700;">1<br>Low</td>
+            <td contenteditable="true">Natural and artificially triggered avalanches unlikely.</td>
+            <td contenteditable="true">&lt; Size 2 avalanches in isolated areas or extreme terrain.</td>
           </tr>
         </tbody>
       </table>
@@ -637,7 +632,7 @@ function render() {
 
   if (ringOpacity > 0.01) {
     const RING_COLORS  = ['#00cfff', '#ffe066', '#ff8c42'];
-    const RING_LABELS  = ['Above 9,500 ft', '8,000 – 9,500 ft', 'Below 8,000 ft'];
+    const RING_LABELS  = ['Above Resort', 'Upper Mountain', 'Lower Mountain'];
     const scaleElRef   = document.getElementById('scale');
     const dotsRef      = document.querySelectorAll('.dot');
     const scaleH       = scaleElRef ? scaleElRef.offsetHeight : 1;
